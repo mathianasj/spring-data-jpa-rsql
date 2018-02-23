@@ -72,6 +72,7 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
 
   // === private
 
+
   private List<Object> castArguments(final Root<T> root) {
     final List<Object> args = new ArrayList<Object>();
     final Class<? extends Object> type = root.get(property).getJavaType();
@@ -83,6 +84,8 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
         args.add(Long.parseLong(argument));
       } else if (type.equals(UUID.class)) {
         args.add(UUID.fromString(argument));
+      } else if (type.isEnum()) {
+        args.add(Enum.valueOf((Class) type, argument));
       } else {
         args.add(argument);
       }
